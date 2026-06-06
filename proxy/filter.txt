@@ -1,0 +1,23 @@
+# Allowlist for tinyproxy
+# One regex per line
+
+
+# Examples
+# --------------------------------------------------
+# ^https://example\.com$   | Exact domain
+# \.?example\.com$         | Domain and all subdomains
+
+
+# Allowed
+# --------------------------------------------------
+
+# Needed for Claude to run
+\.?anthropic\.com$
+\.?claude\.com$
+\.?claude\.ai$
+
+# Might be needed for Claude?
+# ^raw.githubusercontent.com$
+# ^storage.googleapis.com$
+
+# Whitelist

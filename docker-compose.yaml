@@ -1,0 +1,51 @@
+services:
+  claude:
+    build:
+      # Build Context: "Make all these files available when building the image"
+      context: .  # Use current directory as build context
+      dockerfile: Dockerfile
+    
+    # Change to a unique name if you want to use multiple instances of claude-box
+    container_name: claude-box 
+    networks:
+      - proxy
+    
+    environment:
+      HTTP_PROXY:  http://proxy:8888
+      HTTPS_PROXY: http://proxy:8888
+      NO_PROXY:    localhost,127.0.0.1
+
+    volumes:
+      # Mount local workspace directory (codebase, notes, etc)
+      # Doesn't have to be in this directory
+      - /home/me/Documents/claude-box/workspace:/home/ubuntu/workspace
+      # Named volume (managed by Docker) to persist auth, settings, etc
+      - claude-config:/home/ubuntu/.claude
+    
+    # Jumps into workspace when you enter container (for convenience)
+    working_dir: /home/ubuntu/workspace
+    
+    # Keep container running after start
+    command: tail -f /dev/null
+  
+  proxy: # Simple forward proxy using tinyproxy
+    build:
+      context:  ./proxy
+      dockerfile: Dockerfile
+    
+    container_name: proxy
+    networks:
+      - proxy
+    
+    volumes:
+      # Mount filter.txt so we can easily edit
+      # Modify local path as needed
+      - /home/me/Documents/claude-box/proxy/filter.txt:/etc/tinyproxy/filter.txt
+
+volumes:
+  # Named volume (managed by Docker) to persist auth, settings, etc
+  claude-config:
+
+networks:
+  proxy:
+    driver: bridge
