@@ -1,0 +1,16 @@
+# Basic .gitignore Syntax
+
+# Examples
+# secrets.txt   Ignores any file named secrets.txt anywhere in the repo
+# *.log         Ignores all .log files anywhere
+# build/        Ignores the build directory (trailing / means directory only)
+# /TODO         Ignores TODO only in the root, not in subdirectories
+# doc/*.txt     Ignores .txt files directly inside doc/, but not doc/sub/a.txt
+# doc/**/*.txt  Ignores .txt files anywhere under doc/ (any depth)
+# **/logs       Ignores a directory named logs anywhere in the tree
+
+# Wildcards
+# *      Matches anything except a slash
+# ?      Matches any one character except a slash
+# [abc]  Matches one character from the set
+# **     Matches across directory boundaries (any depth)
