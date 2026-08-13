@@ -7,7 +7,7 @@ services:
     
     container_name: claude-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
     networks:
-      - proxy
+      - internal # Force Claude to go through the proxy
     
     environment:
       HTTP_PROXY:  http://proxy:8888
@@ -43,18 +43,28 @@ services:
     
     container_name: proxy-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
     networks:
-      - proxy
+      - internal # For Claude
+      - egress   # Internet access
     
     volumes:
       # Mount proxy filter.txt file so we can edit if needed
       # Read only access from inside container
       - ${PROXY_FILTER_PATH:?Set PROXY_FILTER_PATH in .env}:/etc/tinyproxy/filter.txt:ro
+    
+    restart: unless-stopped
 
 volumes:
   # Named volume (managed by Docker) to persist auth, settings, etc
   claude-config-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}:
 
 networks:
-  proxy:
-    name:   proxy-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
-    driver: bridge
+  # Local with no internet access
+  # Allows Claude to use the proxy
+  internal:
+    name: internal-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
+    internal: true
+  
+  # Internet access
+  # Only the proxy should have access
+  egress:
+    name: egress-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
