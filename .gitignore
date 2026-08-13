@@ -14,3 +14,6 @@
 # ?      Matches any one character except a slash
 # [abc]  Matches one character from the set
 # **     Matches across directory boundaries (any depth)
+
+.env
+filter.txt

@@ -16,9 +16,15 @@ services:
       NO_PROXY:    localhost,127.0.0.1
 
     volumes:
-      # Mount local workspace directory (codebase, notes, etc)
+      # Mount local workspace directory (notes, files, etc)
       # Doesn't have to be in this directory
-      - /home/me/Documents/claude-box/workspace:/home/ubuntu/workspace
+      # Claude will have read and write access to anything here
+      - ${WORKSPACE_PATH}:/home/ubuntu/workspace
+      # Read only access to a codebase
+      - ${REPO_PATH}:/home/ubuntu/code:ro
+      # TODO: Skills: We want to have:
+      # 1. General purpose skills tracked in this git repo
+      # 2. Project specific skills. Not tracked here, but stored somewhere it will be backed up.
       # Named volume (managed by Docker) to persist auth, settings, etc
       - claude-config:/home/ubuntu/.claude
     
@@ -38,9 +44,9 @@ services:
       - proxy
     
     volumes:
-      # Mount filter.txt so we can easily edit
-      # Modify local path as needed
-      - /home/me/Documents/claude-box/proxy/filter.txt:/etc/tinyproxy/filter.txt
+      # Mount proxy filter.txt file so we can edit if needed
+      # Read only access from inside container
+      - ${PROXY_FILTER_PATH}:/etc/tinyproxy/filter.txt:ro
 
 volumes:
   # Named volume (managed by Docker) to persist auth, settings, etc
