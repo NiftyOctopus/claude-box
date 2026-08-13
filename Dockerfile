@@ -5,7 +5,7 @@ FROM ubuntu:24.04
 # -y: Automatically answer yes to prompts
 RUN apt-get update
 RUN apt-get install -y curl git
-RUN apt-get install -y python3 python3-pip
+RUN apt-get install -y python3 python3-pip python3-venv
 
 # We want a non-root user
 # We also want the User and Group ID to match the host (avoids perm issues when collaborating on files)
@@ -32,10 +32,19 @@ RUN bash install.sh
 ENV PATH="/home/ubuntu/.local/bin:${PATH}"
 
 # Copy project instructions to the container
-COPY --chown=ubuntu:ubuntu CLAUDE.md .claude/CLAUDE.md
+# Moved to ubuntu/.claude after container starts via entrypoint.sh
+COPY --chown=ubuntu:ubuntu CLAUDE.md CLAUDE.md
 
 # Copy python requirements list to the container
 COPY --chown=ubuntu:ubuntu requirements.txt requirements.txt
+
+# Create Python virtual env
+RUN python3 -m venv /home/ubuntu/.venv
+
+# Ensures we install packages in the venv
+# We cannot use the source command in a Dockerfile because each RUN command is a separate shell.
+# Instead we modify PATH so venv/bin is first, ensuring pip is run inside the venv.
+ENV PATH="/home/ubuntu/.venv/bin:$PATH"
 
 # Install Python dependencies
 RUN pip install -r requirements.txt

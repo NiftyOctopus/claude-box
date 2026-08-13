@@ -5,8 +5,7 @@ services:
       context: .  # Use current directory as build context
       dockerfile: Dockerfile
     
-    # Change to a unique name if you want to use multiple instances of claude-box
-    container_name: claude-box 
+    container_name: claude-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
     networks:
       - proxy
     
@@ -19,14 +18,17 @@ services:
       # Mount local workspace directory (notes, files, etc)
       # Doesn't have to be in this directory
       # Claude will have read and write access to anything here
-      - ${WORKSPACE_PATH}:/home/ubuntu/workspace
+      - ${WORKSPACE_PATH:?Set WORKSPACE_PATH in .env}:/home/ubuntu/workspace
+      
       # Read only access to a codebase
-      - ${REPO_PATH}:/home/ubuntu/code:ro
-      # TODO: Skills: We want to have:
-      # 1. General purpose skills tracked in this git repo
-      # 2. Project specific skills. Not tracked here, but stored somewhere it will be backed up.
+      - ${REPO_PATH:?Set REPO_PATH in .env}:/home/ubuntu/code:ro
+
+      # Read only access to skills
+      # Project specific skills are in WORKSPACE_PATH/.claude/skills
+      - ${SKILLS_PATH:?Set SKILLS_PATH in .env}:/home/ubuntu/.claude/skills:ro
+
       # Named volume (managed by Docker) to persist auth, settings, etc
-      - claude-config:/home/ubuntu/.claude
+      - claude-config-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}:/home/ubuntu/.claude
     
     # Jumps into workspace when you enter container (for convenience)
     working_dir: /home/ubuntu/workspace
@@ -39,19 +41,20 @@ services:
       context:  ./proxy
       dockerfile: Dockerfile
     
-    container_name: proxy
+    container_name: proxy-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
     networks:
       - proxy
     
     volumes:
       # Mount proxy filter.txt file so we can edit if needed
       # Read only access from inside container
-      - ${PROXY_FILTER_PATH}:/etc/tinyproxy/filter.txt:ro
+      - ${PROXY_FILTER_PATH:?Set PROXY_FILTER_PATH in .env}:/etc/tinyproxy/filter.txt:ro
 
 volumes:
   # Named volume (managed by Docker) to persist auth, settings, etc
-  claude-config:
+  claude-config-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}:
 
 networks:
   proxy:
+    name:   proxy-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
     driver: bridge
