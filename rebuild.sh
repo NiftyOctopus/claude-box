@@ -1,12 +1,17 @@
+# Load env vars
+set -a
+source .env
+set +a
+
 # Remove all containers and named volumes (claude-config)"
-docker compose down -v
+sudo docker compose down -v
 
 # Remove images
-docker rmi $(docker images claude-box-claude -q)
-docker rmi $(docker images claude-box-proxy  -q)
+sudo docker rmi $(sudo docker images claude-${PROJECT_SLUG}-claude -q)
+sudo docker rmi $(sudo docker images claude-${PROJECT_SLUG}-proxy  -q)
 
 # Fresh rebuild without cache
-docker compose build --no-cache
+sudo docker compose build --no-cache
 
 # Spinning up!
-docker compose up -d
+sudo docker compose up -d

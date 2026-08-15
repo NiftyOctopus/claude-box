@@ -1,14 +1,19 @@
+# Load env vars
+set -a
+source .env
+set +a
+
 # Stop everything
-docker compose stop
+sudo docker compose stop
 
 # Remove container
-docker rm proxy
+sudo docker rm proxy-${PROJECT_SLUG}
 
 # Remove image
-docker rmi $(docker images claude-box-proxy -q)
+sudo docker rmi $(sudo docker images claude-${PROJECT_SLUG}-proxy -q)
 
 # Fresh rebuild without cache
-docker compose build proxy --no-cache
+sudo docker compose build proxy --no-cache
 
 # Spinning up!
-docker compose up -d
+sudo docker compose up -d

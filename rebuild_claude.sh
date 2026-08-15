@@ -1,14 +1,19 @@
+# Load env vars
+set -a
+source .env
+set +a
+
 # Stop everything
-docker compose stop
+sudo docker compose stop
 
 # Remove container
-docker rm claude
+sudo docker rm claude-${PROJECT_SLUG}
 
 # Remove image
-docker rmi $(docker images claude-box-claude -q)
+sudo docker rmi $(sudo docker images claude-${PROJECT_SLUG}-claude -q)
 
 # Fresh rebuild without cache
-docker compose build claude --no-cache
+sudo docker compose build claude --no-cache
 
 # Spinning up!
-docker compose up -d
+sudo docker compose up -d
