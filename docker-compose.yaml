@@ -28,7 +28,7 @@ services:
       - ${SKILLS_PATH:?Set SKILLS_PATH in .env}:/home/ubuntu/.claude/skills:ro
 
       # Named volume (managed by Docker) to persist auth, settings, etc
-      - claude-config-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}:/home/ubuntu/.claude
+      - claude-config
     
     # Jumps into workspace when you enter container (for convenience)
     working_dir: /home/ubuntu/workspace
@@ -55,7 +55,8 @@ services:
 
 volumes:
   # Named volume (managed by Docker) to persist auth, settings, etc
-  claude-config-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}:
+  claude-config:
+    name: claude-config-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
 
 networks:
   # Local with no internet access
