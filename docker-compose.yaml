@@ -28,7 +28,7 @@ services:
       - ${SKILLS_PATH:?Set SKILLS_PATH in .env}:/home/ubuntu/.claude/skills:ro
 
       # Named volume (managed by Docker) to persist auth, settings, etc
-      - claude-config
+      - claude-config:/home/ubuntu/.claude
     
     # Jumps into workspace when you enter container (for convenience)
     working_dir: /home/ubuntu/workspace
