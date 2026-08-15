@@ -1,23 +1,22 @@
 # Allowlist for tinyproxy
 # One regex per line
 
+# After making changes run the following to refresh:
+# sudo docker compose restart proxy
+
 
 # Examples
 # --------------------------------------------------
-# ^https://example\.com$   | Exact domain
-# \.?example\.com$         | Domain and all subdomains
+# ^example\.com$        | Exact domain
+# ^api\.example\.com$   | Exact subdomain
+# ^(.*\.)?example\.com$ | Domain and all subdomains
 
 
 # Allowed
 # --------------------------------------------------
 
 # Needed for Claude to run
-\.?anthropic\.com$
-\.?claude\.com$
-\.?claude\.ai$
-
-# Might be needed for Claude?
-# ^raw.githubusercontent.com$
-# ^storage.googleapis.com$
+^api\.anthropic\.com$
+^platform\.claude\.com$
 
 # Whitelist
