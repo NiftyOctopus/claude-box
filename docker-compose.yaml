@@ -24,7 +24,7 @@ services:
       - ${REPO_PATH:?Set REPO_PATH in .env}:/home/ubuntu/code:ro
 
       # Read only access to skills
-      # Project specific skills are in WORKSPACE_PATH/.claude/skills
+      # Project specific skills are in REPO_PATH/.claude/skills
       - ${SKILLS_PATH:?Set SKILLS_PATH in .env}:/home/ubuntu/.claude/skills:ro
 
       # Named volume (managed by Docker) to persist auth, settings, etc
