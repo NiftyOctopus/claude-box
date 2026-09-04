@@ -6,6 +6,8 @@ FROM ubuntu:24.04
 RUN apt-get update
 RUN apt-get install -y curl git
 RUN apt-get install -y python3 python3-pip python3-venv
+# For PDF processing
+RUN apt-get install -y poppler-utils 
 
 # We want a non-root user
 # We also want the User and Group ID to match the host (avoids perm issues when collaborating on files)
