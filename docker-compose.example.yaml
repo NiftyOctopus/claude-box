@@ -1,0 +1,12 @@
+# Example override file
+# Allows you to customize volumes and other settings without modifying the repo
+# Copy content to docker-compose.override.yaml and modify as needed
+
+services:
+  claude:
+    volumes:      
+      # Read only access to Documents
+      # - /home/bryan/Documents/Shared:/home/ubuntu/files:ro
+
+      # Socket for Claude to talk to the file broker script
+      # - /run/broker:/run/broker
