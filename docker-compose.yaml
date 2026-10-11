@@ -19,12 +19,9 @@ services:
       # Doesn't have to be in this directory
       # Claude will have read and write access to anything here
       - ${WORKSPACE_PATH:?Set WORKSPACE_PATH in .env}:/home/ubuntu/workspace
-      
-      # Read only access to a codebase
-      - ${REPO_PATH:?Set REPO_PATH in .env}:/home/ubuntu/code:ro
 
       # Read only access to skills
-      # Project specific skills are in REPO_PATH/.claude/skills
+      # Project specific skills are in project/.claude/skills
       - ${SKILLS_PATH:?Set SKILLS_PATH in .env}:/home/ubuntu/.claude/skills:ro
 
       # Named volume (managed by Docker) to persist auth, settings, etc
