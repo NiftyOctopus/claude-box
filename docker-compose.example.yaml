@@ -4,9 +4,12 @@
 
 services:
   claude:
-    volumes:      
+    volumes:
+      # Read only access to a codebase
+      # - /home/user/Dev/lorum-ipsum:/home/ubuntu/code:ro
+
       # Read only access to Documents
-      # - /home/bryan/Documents/Shared:/home/ubuntu/files:ro
+      # - /home/user/Documents/Shared:/home/ubuntu/files:ro
 
       # Socket for Claude to talk to the file broker script
       # - /run/broker:/run/broker
