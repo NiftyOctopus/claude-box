@@ -13,6 +13,11 @@ services:
       HTTP_PROXY:  http://proxy:8888
       HTTPS_PROXY: http://proxy:8888
       NO_PROXY:    localhost,127.0.0.1,git.github-proxy,api.github-proxy
+      # Ensure git requests go through the github proxy
+      GIT_CONFIG_COUNT:   1
+      GIT_CONFIG_KEY_0:   url.http://git.github-proxy:8080/.insteadOf
+      GIT_CONFIG_VALUE_0: https://github.com/
+
 
     volumes:
       # Mount local workspace directory (notes, files, etc)
