@@ -1,0 +1,32 @@
+services:
+  claude:    
+    environment:
+      NO_PROXY:           localhost,127.0.0.1,git.github-proxy,api.github-proxy
+      GIT_CONFIG_COUNT:   1
+      GIT_CONFIG_KEY_0:   url.http://git.github-proxy:8080/.insteadOf
+      GIT_CONFIG_VALUE_0: https://github.com/
+
+  github-proxy:
+    build:
+      context:    ./github-proxy
+      dockerfile: Dockerfile
+
+    container_name: github-proxy-${PROJECT_SLUG:?Set PROJECT_SLUG in .env}
+
+    environment:
+      GITHUB_TOKEN: ${GH_PROXY_TOKEN:?Set GH_PROXY_TOKEN in .env}
+
+    networks:
+      internal: # For Claude
+        aliases:
+          - git.github-proxy # Git operations
+          - api.github-proxy # GitHub API
+
+      egress: # Internet access
+
+    volumes:
+      # Mount GitHub repo allow list so we can edit if needed
+      # Read only access from inside container
+      - ${GH_PROXY_REPOS_PATH:?Set GH_PROXY_REPOS_PATH in .env}:/config/repos.txt:ro
+
+    restart: unless-stopped
