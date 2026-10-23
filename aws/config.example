@@ -1,0 +1,8 @@
+[default]
+region = us-east-1
+
+[profile ai]
+role_arn               = arn:aws:iam::012345678901:role/ReadOnlyAI
+credential_source      = Environment
+region                 = us-east-1
+sts_regional_endpoints = regional
