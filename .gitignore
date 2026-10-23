@@ -17,4 +17,5 @@
 
 .env
 filter.txt
+repos.txt
 docker-compose.override.yaml
