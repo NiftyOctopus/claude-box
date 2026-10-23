@@ -1,0 +1,6 @@
+services:
+  claude:    
+    environment:
+      ZULIP_SITE:    ${ZULIP_SITE:?Set ZULIP_SITE in .env}
+      ZULIP_EMAIL:   ${ZULIP_EMAIL:?Set ZULIP_EMAIL in .env}
+      ZULIP_API_KEY: ${ZULIP_API_KEY:?Set ZULIP_API_KEY in .env}
