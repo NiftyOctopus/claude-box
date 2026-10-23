@@ -1,2 +1,3 @@
 # Allowed repos
 YourStake/stake
+YourStake/hub
