@@ -4,7 +4,7 @@ FROM ubuntu:24.04
 # Install dependencies (add more as needed)
 # -y: Automatically answer yes to prompts
 RUN apt-get update
-RUN apt-get install -y curl git unzip
+RUN apt-get install -y curl jq git unzip
 RUN apt-get install -y python3 python3-pip python3-venv
 # For PDF processing
 RUN apt-get install -y poppler-utils
