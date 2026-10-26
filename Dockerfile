@@ -4,10 +4,18 @@ FROM ubuntu:24.04
 # Install dependencies (add more as needed)
 # -y: Automatically answer yes to prompts
 RUN apt-get update
-RUN apt-get install -y curl git
+RUN apt-get install -y curl git unzip
 RUN apt-get install -y python3 python3-pip python3-venv
 # For PDF processing
-RUN apt-get install -y poppler-utils 
+RUN apt-get install -y poppler-utils
+
+# Install AWS CLI v2
+RUN curl -fsSL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip \
+    && unzip -q /tmp/awscliv2.zip -d /tmp && /tmp/aws/install \
+    && rm -rf /tmp/aws /tmp/awscliv2.zip
+
+# Disable AWS CLI v2 default pager (breaks non-interactive use)
+ENV AWS_PAGER=""
 
 # We want a non-root user
 # We also want the User and Group ID to match the host (avoids perm issues when collaborating on files)
