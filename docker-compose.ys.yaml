@@ -1,0 +1,10 @@
+# Allows access, through proxy, to YourStake app running locally
+services:
+  proxy:
+    networks:
+      - stake
+
+networks:
+  stake:
+    name: stake_default # YourStake app default network
+    external: true
